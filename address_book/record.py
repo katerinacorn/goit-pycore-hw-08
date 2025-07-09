@@ -26,11 +26,13 @@ class Record:
             if phone.value == phone_value:
                 return phone
         return None
-    
+
     def add_birthday(self, birthday_str):
         self.birthday = Birthday(birthday_str)
 
     def __str__(self):
         phones = "; ".join(str(p) for p in self.phones)
         birthday = self.birthday.value if self.birthday else "N/A"
-        return f"Contact name: {self.name.value}, phones: {phones}, birthday: {birthday}"
+        return (
+            f"Contact name: {self.name.value}, phones: {phones}, birthday: {birthday}"
+        )

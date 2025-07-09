@@ -35,18 +35,21 @@ class Phone(Field):
             raise ValueError("Phone number must be exactly 10 digits")
         self._value = new_value
 
+
 from datetime import datetime, timedelta
 from typing import Union
 
 DATE_FORMAT = "%d.%m.%Y"
+
+
 class Birthday(Field):
     def __init__(self, value):
         self.value = value
-        
+
     @property
     def value(self):
         return self._value
-    
+
     @value.setter
     def value(self, new_value):
         try:
@@ -54,7 +57,6 @@ class Birthday(Field):
             self._value = parsed_date
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
-        
+
     def __str__(self):
         return self._value.strftime(DATE_FORMAT)
-
