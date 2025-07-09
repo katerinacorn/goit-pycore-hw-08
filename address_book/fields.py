@@ -1,3 +1,8 @@
+from datetime import datetime
+
+DATE_FORMAT = "%d.%m.%Y"
+
+
 class Field:
     def __init__(self, value):
         self.value = value
@@ -36,12 +41,6 @@ class Phone(Field):
         self._value = new_value
 
 
-from datetime import datetime, timedelta
-from typing import Union
-
-DATE_FORMAT = "%d.%m.%Y"
-
-
 class Birthday(Field):
     def __init__(self, value):
         self.value = value
@@ -52,9 +51,12 @@ class Birthday(Field):
 
     @value.setter
     def value(self, new_value):
+        if not isinstance(new_value, str):
+            raise TypeError("Birthday must be a string in DD.MM.YYYY format")
+
         try:
             parsed_date = datetime.strptime(new_value, DATE_FORMAT)
-            self._value = parsed_date
+            self._value = parsed_date.date()
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
 

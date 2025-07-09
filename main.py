@@ -44,6 +44,16 @@ def main():
     print("\n📒 Address Book object:")
     print(book)
 
+    # Add birthdays to records
+    print("\n🎉 Adding birthdays to records...")
+    john.add_birthday("12.07.1990")
+    jane.add_birthday("22.02.1992")
+
+    upcoming = book.get_upcoming_birthdays()
+    print("\n📅 Upcoming birthdays next week:")
+    for user in upcoming:
+        print(f" - {user['name']}: {user['congratulation_date']}")
+
 
 if __name__ == "__main__":
     main()
