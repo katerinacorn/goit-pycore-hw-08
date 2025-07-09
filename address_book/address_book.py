@@ -23,6 +23,12 @@ class AddressBook(UserDict):
         return self.data.get(name)
 
     def get_upcoming_birthdays(self) -> List[Dict[str, str]]:
+        """
+        Returns a list of users who have birthdays within the next 7 days.
+        If the birthday falls on a weekend, the congratulation date is moved to the following Monday.
+
+        :return: List of dictionaries with 'name' and 'congratulation_date' in 'DD.MM.YYYY' format.
+        """
         today = datetime.today().date()
         users_to_congratulate = []
 
@@ -59,6 +65,10 @@ class AddressBook(UserDict):
         return users_to_congratulate
 
     def _get_congratulation_date(self, birthday_date: date) -> date:
+        """
+        Returns the adjusted congratulation date.
+        If the birthday falls on a weekend, shifts it to the following Monday.
+        """
         weekday = birthday_date.weekday()
 
         if weekday in WEEKEND_DAYS:
