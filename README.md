@@ -17,8 +17,6 @@ python3 -m bot.main
 python3 run.py
 ```
 
-# python3 -m bot.tests
-
 ---
 
 ## 💬 Підтримувані команди
