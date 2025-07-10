@@ -10,7 +10,10 @@ MESSAGES = {
     "contact_not_found": "❌ Contact not found.",
     "all_empty": "📭 No contacts found.",
     "all_header": "📇 Contact list:",
-    "all_entry": lambda name, phone: f"\t 📌 {name}: {phone}",
+    "all_entry": lambda entry: f"\t 📌 {str(entry)}",
+    "birthday_added": "🎉 Birthday added successfully.",
+    "birthday_found": lambda name, birthday: f"🎂 {name}'s birthday is {birthday}",
+    "birthday_not_found": lambda name: f"{name} has no birthday information.",
     "help": (
         "📖 Available commands:\n"
         "  hello                  - Greet the bot\n"
@@ -24,9 +27,9 @@ MESSAGES = {
 }
 
 ERROR_MESSAGES = {
-    "KeyError": "Enter user name.",
-    "ValueError": "Invalid input. Expected: name and phone.",
-    "IndexError": "Missing arguments. Please enter a user name.",
+    "KeyError": "Unknown key. Please check the command.",
+    "ValueError": lambda e: f"Invalid input. {str(e)}",
+    "IndexError": "Missing arguments. Please provide the required information.",
     "TypeError": "Invalid argument type or count.",
     "Unexpected": lambda e: f"😱 Unexpected error: {str(e)}",
 }
