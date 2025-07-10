@@ -2,6 +2,7 @@ from .messages import MESSAGES
 from .decorators import input_error
 from address_book import AddressBook, Record
 
+
 @input_error
 def add_contact(args, contacts: AddressBook):
     try:
@@ -48,7 +49,7 @@ def show_phone(args, contacts):
             return f"No phone numbers found for {name}."
 
         result = [f"\n📱 {name}'s phone numbers:"]
-        
+
         for phone in phones:
             result.append(f" - {str(phone)}")
 

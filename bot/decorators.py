@@ -1,4 +1,5 @@
-from .messages import ERROR_MESSAGES
+from .error_messages import ERROR_MESSAGES
+
 
 def input_error(func):
     def wrapper(*args, **kwargs):
@@ -14,4 +15,5 @@ def input_error(func):
             return ERROR_MESSAGES["TypeError"]
         except Exception as e:
             return ERROR_MESSAGES["Unexpected"](e)
+
     return wrapper

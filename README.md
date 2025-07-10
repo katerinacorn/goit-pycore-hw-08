@@ -11,6 +11,14 @@
 python3 -m bot.main
 ```
 
+або
+
+```bash
+python3 run.py
+```
+
+# python3 -m bot.tests
+
 ---
 
 ## 💬 Підтримувані команди
@@ -85,15 +93,25 @@ python3 -m bot.main
 ## 📂 Структура проекту
 
 ```
-bot/
-├── main.py              # Точка входу (інтерфейс)
-├── commands.py          # Команди для роботи з контактами
-├── messages.py          # Словник з усіма повідомленнями
-├── utils.py             # Парсер команд
-├── decorators.py        # Обробка помилок
-├── tests.py             # Юніт-тести
-address_book.py          # Класи Field, Record, AddressBook
-README.md                # Цей файл
+goit-pycore-hw-07/
+├── address_book/
+│   ├── __init__.py
+│   ├── address_book.py       # Клас AddressBook
+│   ├── fields.py              # Класи Field, Name, Phone, Birthday
+│   └── record.py             # Клас Record
+│
+├── bot/
+│   ├── commands.py           # Обробка команд користувача
+│   ├── decorators.py         # Декоратори для обробки помилок
+│   ├── error_messages.py     # Повідомлення про помилки
+│   ├── main.py               # Інтерфейс програми
+│   ├── messages.py           # Повідомлення інтерфейсу
+│   ├── utils.py              # Утіліти
+│   └── tests.py              # Юніт-тести команд
+│
+├── run.py                   # Точка входу.
+├── README.md                # Цей файл
+└── .gitignore
 ```
 
 ---
@@ -117,3 +135,14 @@ exit
 ```
 close
 ```
+
+---
+
+## 🚀 Тести
+
+```bash
+python3 -m bot.tests
+python3 -m address_book.tests
+```
+
+---

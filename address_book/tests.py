@@ -1,5 +1,4 @@
 from address_book import AddressBook, Record, Name, Phone
-#    python3 -m address_book.tests
 
 # Name
 try:

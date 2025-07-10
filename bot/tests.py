@@ -1,8 +1,9 @@
 from .main import parse_input, add_contact, change_contact, show_phone, show_all
 from .decorators import input_error
-from .messages import ERROR_MESSAGES, MESSAGES
+from .messages import MESSAGES
+from .error_messages import ERROR_MESSAGES
 from address_book import AddressBook, Record
-# python3 -m bot.tests   
+
 
 def test_parse_input():
     assert parse_input("add John 12345") == ("add", ["John", "12345"])
@@ -14,7 +15,6 @@ def test_parse_input():
 def test_add_contact():
     contacts = AddressBook()
     msg = add_contact(["John", "1234567890"], contacts)
-    print('...', msg)
     assert msg == MESSAGES["add_success"]
     contact = contacts.find("John")
     assert contact is not None
