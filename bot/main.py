@@ -48,12 +48,10 @@ def main():
     while True:
         user_input = input(MESSAGES["prompt"])
         command, args = parse_input(user_input)
-
         if not command:
             continue
 
         handler = COMMAND_HANDLERS.get(command)
-
         if not handler:
             print(MESSAGES["invalid"])
             continue
