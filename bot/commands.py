@@ -117,3 +117,11 @@ def birthdays(contacts: AddressBook):
         result.append(f" - {user['name']}: {user['congratulation_date']}")
 
     return "\n".join(result)
+
+
+def say_hello():
+    print(MESSAGES["greeting"])
+
+
+def say_goodbye():
+    print(MESSAGES["goodbye"])
