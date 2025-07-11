@@ -16,9 +16,13 @@ from .commands import (
     say_hello,
 )
 from address_book import AddressBook
+from .persistence import load_data, save_data
+
+contacts = load_data()
 
 
 def handle_sigint(sig, frame):
+    save_data(contacts)
     say_goodbye()
     sys.exit(0)
 
@@ -42,7 +46,6 @@ COMMAND_HANDLERS = {
 
 
 def main():
-    contacts = AddressBook()
     print(MESSAGES["welcome"])
 
     while True:
@@ -50,6 +53,11 @@ def main():
         command, args = parse_input(user_input)
         if not command:
             continue
+
+        if command in ("exit", "close"):
+            save_data(contacts)
+            say_goodbye()
+            break
 
         handler = COMMAND_HANDLERS.get(command)
         if not handler:
