@@ -3,11 +3,12 @@ import pickle
 from address_book import AddressBook
 
 FILE_NAME = "address_book.pkl"
+DATA_DIR = "data"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+DATA_DIR_PATH = os.path.join(BASE_DIR, DATA_DIR)
 
-os.makedirs(DATA_DIR, exist_ok=True)
-FILE_PATH = os.path.join(DATA_DIR, FILE_NAME)
+os.makedirs(DATA_DIR_PATH, exist_ok=True)
+FILE_PATH = os.path.join(DATA_DIR_PATH, FILE_NAME)
 
 
 def save_data(book, filename=FILE_PATH):
