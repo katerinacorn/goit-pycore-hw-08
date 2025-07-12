@@ -1,6 +1,7 @@
 import readline
 import sys
 import signal
+from typing import Callable, Dict, Optional, List
 from .messages import MESSAGES
 from .utils import parse_input
 from .commands import (
@@ -15,58 +16,86 @@ from .commands import (
     say_goodbye,
     say_hello,
 )
-from address_book import AddressBook
 from .persistence import load_data, save_data
 
-contacts = load_data()
 
+class ContactManager:
+    def __init__(self):
+        self.address_book = load_data()
+        self._setup_signal_handlers()
+        self._initialize_commands()
 
-def handle_sigint(sig, frame):
-    save_data(contacts)
-    say_goodbye()
-    sys.exit(0)
+    def _setup_signal_handlers(self) -> None:
+        """Setup handlers for system signals."""
+        signal.signal(signal.SIGINT, self._handle_shutdown)
 
+    def _handle_shutdown(self, sig: int, frame) -> None:
+        """Handle application shutdown gracefully."""
+        self.save_and_exit()
 
-signal.signal(signal.SIGINT, handle_sigint)
+    def _initialize_commands(self) -> None:
+        """Initialize command handlers dictionary."""
+        self.command_handlers: Dict[str, Callable] = {
+            "add": self._wrap_handler(add_contact),
+            "change": self._wrap_handler(change_contact),
+            "phone": self._wrap_handler(show_phone),
+            "add-birthday": self._wrap_handler(add_birthday),
+            "show-birthday": self._wrap_handler(show_birthday),
+            "birthdays": lambda _: birthdays(self.address_book),
+            "all": lambda _: show_all(self.address_book),
+            "help": lambda _: show_help(),
+            "-h": lambda _: show_help(),
+            "close": lambda _: self.save_and_exit(),
+            "exit": lambda _: self.save_and_exit(),
+            "hello": lambda _: say_hello(),
+        }
 
-COMMAND_HANDLERS = {
-    "add": add_contact,
-    "change": change_contact,
-    "phone": show_phone,
-    "add-birthday": add_birthday,
-    "show-birthday": show_birthday,
-    "birthdays": lambda _, contacts: birthdays(contacts),
-    "all": lambda _, contacts: show_all(contacts),
-    "help": lambda *_: show_help(),
-    "-h": lambda *_: show_help(),
-    "close": lambda *_: say_goodbye(),
-    "exit": lambda *_: say_goodbye(),
-    "hello": lambda *_: say_hello(),
-}
+    def _wrap_handler(self, handler: Callable) -> Callable:
+        """Wrap command handlers to provide consistent interface."""
+        return lambda args: handler(args, self.address_book)
+
+    def save_and_exit(self) -> None:
+        """Save data and exit the application."""
+        save_data(self.address_book)
+        say_goodbye()
+        sys.exit(0)
+
+    def process_command(self, command: str, args: List[str]) -> Optional[str]:
+        """Process a single command with its arguments."""
+        handler = self.command_handlers.get(command)
+        if not handler:
+            return MESSAGES["invalid"]
+        return handler(args)
+
+    def run(self) -> None:
+        print(MESSAGES["welcome"])
+
+        while True:
+            try:
+                user_input = input(MESSAGES["prompt"])
+                command, args = parse_input(user_input)
+
+                if not command:
+                    continue
+
+                if command in ("exit", "close"):
+                    self.save_and_exit()
+                    break
+
+                result = self.process_command(command, args)
+                if result:
+                    print(result)
+
+            except KeyboardInterrupt:
+                self.save_and_exit()
+            except Exception as e:
+                print(f"An error occurred: {str(e)}")
 
 
 def main():
-    print(MESSAGES["welcome"])
-
-    while True:
-        user_input = input(MESSAGES["prompt"])
-        command, args = parse_input(user_input)
-        if not command:
-            continue
-
-        if command in ("exit", "close"):
-            save_data(contacts)
-            say_goodbye()
-            break
-
-        handler = COMMAND_HANDLERS.get(command)
-        if not handler:
-            print(MESSAGES["invalid"])
-            continue
-
-        result = handler(args, contacts) if callable(handler) else handler()
-        if result:
-            print(result)
+    """Application entry point."""
+    contact_manager = ContactManager()
+    contact_manager.run()
 
 
 if __name__ == "__main__":
