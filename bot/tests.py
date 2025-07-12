@@ -1,4 +1,5 @@
-from .main import parse_input, add_contact, change_contact, show_phone, show_all
+from .commands import add_contact, change_contact, show_phone, show_all
+from .utils import parse_input
 from .decorators import input_error
 from .messages import MESSAGES
 from .error_messages import ERROR_MESSAGES
